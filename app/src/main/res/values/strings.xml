@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">DocuCut</string>
+    <string name="studio_tagline">Investigative Documentary Studio</string>
+    <string name="new_project">New Project</string>
+    <string name="auto_doc_wizard">Auto-Doc Wizard</string>
+    <string name="brand_kits">Client Brand Kits</string>
+    <string name="recent_projects">Recent Documentaries</string>
+    <string name="empty_projects_title">No Documentary Projects Yet</string>
+    <string name="empty_projects_subtitle">Start with Auto-Doc Wizard or load a sample investigative timeline to explore all effects.</string>
+    <string name="load_sample_case">Load Sample Case</string>
+    <string name="export_video">Export</string>
+    <string name="chapters_label">Chapters</string>
+    <string name="motion_text">Motion Text</string>
+    <string name="sound_fx">SFX Vault</string>
+    <string name="silence_condenser">Smart Silence</string>
+    <string name="voice_fit">Voice Fit</string>
+    <string name="export_channel_name">Documentary Export</string>
+    <string name="export_channel_desc">Shows progress for hardware-accelerated chunked documentary exports.</string>
+</resources>

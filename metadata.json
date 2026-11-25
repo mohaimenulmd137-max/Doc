@@ -1,0 +1,6 @@
+{
+  "name": "DocuCut",
+  "description": "CapCut-style automated mobile video editor for informative documentaries and investigative storytelling, engineered with Media3 hardware acceleration and chunked export for 3-4 hour timelines.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
