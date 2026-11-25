@@ -33,6 +33,7 @@ jobs:
           if [ -n "$SDKMANAGER" ]; then
             echo "$(dirname "$SDKMANAGER")" >> "$GITHUB_PATH"
             yes | "$SDKMANAGER" --licenses > /dev/null 2>&1 || true
+            "$SDKMANAGER" --install "platform-tools" "platforms;android-36" "build-tools;36.0.0" > /dev/null 2>&1 || true
           fi
           echo "Using Android SDK at: $SDK_DIR"
 
@@ -46,15 +47,18 @@ jobs:
           if [ -f debug.keystore.base64 ] && [ ! -f debug.keystore ]; then
             base64 -d debug.keystore.base64 > debug.keystore
           fi
+          if [ ! -f debug.keystore ]; then
+            keytool -genkeypair -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+          fi
           if [ ! -f .env ] && [ -f .env.example ]; then
             cp .env.example .env
           fi
 
       - name: Run Timeline & Engine Unit Tests
-        run: gradle :app:testDebugUnitTest --tests "com.example.TimelineEngineUnitTest" --tests "com.example.ExampleUnitTest"
+        run: gradle :app:testDebugUnitTest --tests "com.example.TimelineEngineUnitTest" --tests "com.example.ExampleUnitTest" --no-daemon --no-configuration-cache --max-workers=2 -Dorg.gradle.jvmargs="-Xmx2560m -XX:MaxMetaspaceSize=768m" --console=plain
 
       - name: Build Debug APK
-        run: gradle assembleDebug
+        run: gradle assembleDebug --no-daemon --no-configuration-cache --max-workers=2 -Dorg.gradle.jvmargs="-Xmx2560m -XX:MaxMetaspaceSize=768m" --console=plain --stacktrace
 
       - name: Upload Debug APK Artifact
         uses: actions/upload-artifact@v4
@@ -82,7 +86,7 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           echo "$KEYSTORE_BASE64" | base64 -d > "${{ github.workspace }}/my-upload-key.jks"
-          KEYSTORE_PATH="${{ github.workspace }}/my-upload-key.jks" gradle assembleRelease bundleRelease
+          KEYSTORE_PATH="${{ github.workspace }}/my-upload-key.jks" gradle assembleRelease bundleRelease --no-daemon --no-configuration-cache --max-workers=2 -Dorg.gradle.jvmargs="-Xmx2560m -XX:MaxMetaspaceSize=768m" --console=plain
 
       - name: Upload Release Artifacts
         if: steps.signing_check.outputs.enabled == 'true'
